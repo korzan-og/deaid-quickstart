@@ -37,7 +37,7 @@
 
 	![](./assets/aws-account-access.png)
 
-10) Close **AWS account access** popup and click** **Open AWS Console (us-east-1) ** on the left menu.
+10) Close **AWS account access** popup and click **Open AWS Console (us-east-1)** on the left menu.
 
 11) On AWS Console, Search for **EC2** and Press Enter
 
@@ -51,16 +51,20 @@
      
     Leave the rest as default and click **Create key Pair**. 
     
-    **When this step successfully completes, it will download a pem file to your machine. ** 
+    **When this step successfully completes, it will download a pem file to your machine.** 
+
     **This PEM file will be used to login to the EC2 instance for the workshops so make sure where you download it.**
 
 	![](./assets/create-key-pair.png)
 
 14) Download **CloudFormation** Yaml File and save it to your laptop : [Download](/cloudformation-ec2.yaml)
-15) On AWS Console, Search for **CloudFormation** and Press Enter
-16) Click **Create Stack** ( with new resources(standard) )
-17) From Prerequisite - Prepare template, select **Choose an existing template** and from specify template select **Upload a template file**.
-	Click **Choose file** and select the CloudFormation Yaml file that you downloaded in the previous steps. Click **Next**
+15) On AWS Console, Search for **CloudFormation** and select CloudFormation service.
+16) Click **Create Stack**
+17) From **Prerequisite - Prepare template** screen, 
+- [ ] Select **Choose an existing template** 
+- [ ] From **Specify Template** select **Upload a template file**.
+- [ ] Click **Choose file** and select the CloudFormation Yaml file that you downloaded in the previous steps
+- [ ] Click **Next**
 
 	![](./assets/create-stack.png)
 
