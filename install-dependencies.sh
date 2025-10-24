@@ -251,26 +251,26 @@ echo "Checking Redis..."
 redis-server --version || echo "❌ Redis installation failed"
 redis-cli ping || echo "❌ Redis service not responding"
 
-# =============================================================================
-# Copy terraform.tfvars to required directories
-# =============================================================================
-echo "📁 Copying terraform.tfvars to required directories..."
+# # =============================================================================
+# # Copy terraform.tfvars to required directories
+# # =============================================================================
+# echo "📁 Copying terraform.tfvars to required directories..."
 
-if [ -f "terraform.tfvars" ]; then
-    echo "Copying terraform.tfvars to aws/core/"
-    cp terraform.tfvars aws/core/ 2>/dev/null || echo "⚠️  aws/core/ directory not found"
+# if [ -f "terraform.tfvars" ]; then
+#     echo "Copying terraform.tfvars to aws/core/"
+#     cp terraform.tfvars aws/core/ 2>/dev/null || echo "⚠️  aws/core/ directory not found"
     
-    echo "Copying terraform.tfvars to aws/lab1-tool-calling/"
-    cp terraform.tfvars aws/lab1-tool-calling/ 2>/dev/null || echo "⚠️  aws/lab1-tool-calling/ directory not found"
+#     echo "Copying terraform.tfvars to aws/lab1-tool-calling/"
+#     cp terraform.tfvars aws/lab1-tool-calling/ 2>/dev/null || echo "⚠️  aws/lab1-tool-calling/ directory not found"
     
-    echo "Copying terraform.tfvars to aws/lab2-vector-search/"
-    cp terraform.tfvars aws/lab2-vector-search/ 2>/dev/null || echo "⚠️  aws/lab2-vector-search/ directory not found"
+#     echo "Copying terraform.tfvars to aws/lab2-vector-search/"
+#     cp terraform.tfvars aws/lab2-vector-search/ 2>/dev/null || echo "⚠️  aws/lab2-vector-search/ directory not found"
     
-    echo "✓ terraform.tfvars copied to all required directories"
-else
-    echo "⚠️  terraform.tfvars not found in current directory"
-    echo "   Please ensure terraform.tfvars exists before running Terraform commands"
-fi
+#     echo "✓ terraform.tfvars copied to all required directories"
+# else
+#     echo "⚠️  terraform.tfvars not found in current directory"
+#     echo "   Please ensure terraform.tfvars exists before running Terraform commands"
+# fi
 
 newgrp docker
 
@@ -288,5 +288,5 @@ echo "- Node.js 22 is installed via NVM (use 'nvm use 22' if needed)"
 echo "- Redis service is enabled and started automatically"
 echo "- You may need to restart your shell or run 'source ~/.bashrc'"
 echo "- Docker group membership will be active after logout/login"
-echo "- terraform.tfvars has been copied to all required directories"
+# echo "- terraform.tfvars has been copied to all required directories"
 echo ""
