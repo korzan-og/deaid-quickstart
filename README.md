@@ -1,2 +1,163 @@
-# deaid-quickstart
-This repo is used to create prereqs for the DEAID 2025
+# Quick Start for Deloitte Engineering AI Day 2025
+
+## 🚀 Quick Start
+# Provisioning of the AWS Machine
+
+1) Log in to AWS Workshop Studio
+
+	https://catalog.us-east-1.prod.workshops.aws/
+
+
+2) Click on **Get Started**
+	![[./assets/getstarted.png]]
+
+3) Click Email one-time password (OTP)
+	![[./assets/signin.png]]
+4) Enter your email address and click **Send** passcode
+5) You will receive an email from AWS with a 9-digit OTP in it ( If you don't receive it please check your Spam/Junk Folder)
+	Paste/Enter that 9-digit OTP to the AWS Workshop Studio
+6) Enter your event access code and click **Next**.
+	**This code will be provided by the facilitators.**
+	![[./assets/event_access_code.png]]
+
+7) Review the "terms and conditions", click **I agree with the Terms and Conditions** and click **Join event** 
+	![[./assets/termsandconditions.png]]
+8) Ciick **Get AWS CLI Credentials** button.
+	![[./assets/aws-credentials.png]]
+9) Copy and paste the export information to a notepad/notebook.
+	**This information will be needed during the provisioning of the machines**
+	![[./assets/aws-account-access.png]]
+10) Close **AWS account access** popup and click** **Open AWS Console (us-east-1) ** on the left menu.
+11) On AWS Console, Search for **EC2** and Press Enter
+12) In **EC2** menu, under **Network & Security**, click **Key Pairs**
+	![[./assets/keypair.png]]
+13) Click **Create key Pair** in the upper right corner. In the Create key pair screen, enter a name for the key pair.
+    
+	 **Note:  This key pair name is important for future steps.** 
+     
+    Leave the rest as default and click **Create key Pair**. 
+    
+    **When this step successfully completes, it will download a pem file to your machine. ** 
+    **This PEM file will be used to login to the EC2 instance for the workshops so make sure where you download it.**
+
+	![[./assets/create-key-pair.png]]
+14) Download **CloudFormation** Yaml File and save it to your laptop : https://drive.google.com/file/d/1I8x85kgXhDVd8LxkbHfKVBvo8dG9qnx9/view?usp=sharing
+15) On AWS Console, Search for **CloudFormation** and Press Enter
+16) Click **Create Stack** ( with new resources(standard) )
+17) From Prerequisite - Prepare template, select **Choose an existing template** and from specify template select **Upload a template file**.
+	Click **Choose file** and select the CloudFormation Yaml file that you downloaded in the previous steps. Click **Next**
+	![[./assets/create-stack.png]]
+18) In Specify Stack details, enter a **stack name** and enter your keypair name that you created in previous steps in the **KeyPairName** field. Leave the rest default and click **Next**
+    ![[./assets/create-stack-details.png]]
+
+19) Leave the rest of the options as default click Next and then click Submit the template to start CloudFormation.
+20) CloudFormation script may take couple of minutes to complete. You can click the Refresh: Events button to check the status. When the stack is complete, the stacks status on the left side will be show the message of **CREATE_COMPLETE**
+	![[./assets/stack-create-complete.png]]
+21) When stack is complete, click **Outputs** and note down **PublicDNS** value. 
+	This is the hostname of the machine you will use to run the commands
+	![[./assets/stack-output.png]]
+
+22) Open a terminal (powershell in windows) and go to the folder where you downloaded the PEM file in step 14 and run below command. Don't forget to replace **\<name of the pem file\>** with the name of your **keypair** file name and **\<PublicDNS\>** with **PublicDNS** value from previous step
+	```bash
+	ssh -i ./<name of the pem file>.pem ubuntu@<PublicDNS>
+	```
+
+**Note:**  If you receive an error saying "Unprotected Private Key File" run below commands and rerun the above command. 
+
+For MacOS:
+	```bash
+	chmod 400 <name of the pem file>.pem
+	```
+For Windows:
+
+	```bash
+	icacls .\<name of the pem file>.pem /inheritance:r
+	icacls .\<name of the pem file>.pem /grant:r "%username":"(R)"
+	```
+
+**With these steps you provisioned the machine to install the necessary tools**
+23) Clone the repo
+	```bash
+	git clone https://github.com/korzan-og/deaid-quickstart.git
+	```
+24) Change directory to the folder and run below commands. The last command will install all dependencies with one script.
+	**It may take couple of minutes for script to complete**
+	```bash
+	cd deaid-quickstart
+	```
+	
+	```bash
+	chmod +x install-dependencies.sh
+	```
+
+	```bash
+	./install-dependencies.sh
+	```
+25) Change directory to the home folder and go to first exercise!
+	```bash
+	cd ..
+	```
+
+## Directory Structure
+
+```
+quickstart-streaming-agents/
+├── aws|azure/               # Choose a cloud
+│   ├── core/                # Shared Terraform infrastructure
+│   ├── lab1-tool-calling/   # Lab-specific infra
+│   └── lab2-vector-search/  # Lab-specific infra
+├── deploy.py                # 🚀 Start here
+└── scripts/                 # Python utilities
+```
+
+<details>
+<summary>🔄 Alternative deployment methods</summary>
+
+**Traditional Python:**
+```bash
+pip install -e . && python deploy.py
+```
+
+</details>
+
+<details>
+<summary>🔧 Manual terraform deployment</summary>
+
+### Prerequisites
+- All tools installed and authenticated
+- Confluent Cloud API keys (Cloud Resource Management keys with EnvironmentAdmin role)
+
+### Deploy
+```bash
+cd aws/  # or azure/
+cd core/
+terraform init && terraform apply --auto-approve
+cd ../lab1-tool-calling/  # or lab2-vector-search
+terraform init && terraform apply --auto-approve
+```
+
+### Required terraform.tfvars
+```hcl
+prefix = "streaming-agents"
+cloud_provider = "aws"  # or "azure"
+cloud_region = "your-region"  # must be a region supported by MongoDB free tier, otherwise Lab2 deployment will not succeed
+confluent_cloud_api_key = "your-key"
+confluent_cloud_api_secret = "your-secret"
+ZAPIER_SSE_ENDPOINT = "https://mcp.zapier.com/api/mcp/s/your-key/sse"  # Lab1
+MONGODB_CONNECTION_STRING = "mongodb+srv://cluster0.abc.mongodb.net"  # Lab2
+mongodb_username = "your-db-user"  # Lab2
+mongodb_password = "your-db-pass"  # Lab2
+```
+
+### Tear down
+```bash
+cd aws/lab1-tool-calling && terraform destroy --auto-approve
+cd ../core && terraform destroy --auto-approve
+```
+</details>
+
+## Cleanup
+```bash
+# Automated
+uv run destroy
+```
