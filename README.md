@@ -77,7 +77,7 @@
     ![](./assets/create-stack-details.png)
 
 
-19) Leave the rest of the options as default click Next and then click Submit the template to start CloudFormation.
+19) Leave the rest of the options as default click **Next** and then click **Submit** the template to start CloudFormation.
 20) CloudFormation script may take couple of minutes to complete. You can click the Refresh: Events button to check the status. When the stack is complete, the stacks status on the left side will be show the message of **CREATE_COMPLETE**
 
 	![](./assets/stack-create-complete.png)
@@ -94,7 +94,7 @@
 	ssh -i ./<name of the pem file>.pem ubuntu@<PublicDNS>
 	```
 
-**Note:**  If you receive an error saying "Unprotected Private Key File" run below commands and rerun the above command. 
+**Note:**  If you receive an error saying **"Unprotected Private Key File"** run below commands and rerun the above command. 
 
 For MacOS:
 
@@ -117,17 +117,28 @@ icacls .\<name of the pem file>.pem /grant:r "%username":"(R)"
 git clone https://github.com/korzan-og/deaid-quickstart.git
 ```
 
-24) Change directory to the folder and run below commands. The last command will install all dependencies with one script.
-	**It may take couple of minutes for script to complete**
+24) Change directory to the folder and run below command to make the script runnable. 
 
 ```bash
 cd deaid-quickstart
 chmod +x install-dependencies.sh
 ./install-dependencies.sh
 ```
-
-25) Change directory to the home folder and go to first exercise!
+Run below command to install the dependencies. The last command will install all dependencies with one script.
+**It may take couple of minutes for script to complete**
 
 ```bash
-cd ..
+./install-dependencies.sh
 ```
+
+25) For some changes to take effect, disconnect from machine and reconnect by running the ssh command
+
+```bash
+exit
+```
+
+```bash
+ssh -i ./<name of the pem file>.pem ubuntu@<PublicDNS>
+```
+
+26) Proceed to the first exercise! **Good luck**

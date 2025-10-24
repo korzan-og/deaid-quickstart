@@ -274,8 +274,6 @@ redis-cli ping || echo "❌ Redis service not responding"
 #     echo "   Please ensure terraform.tfvars exists before running Terraform commands"
 # fi
 
-newgrp docker
-
 # =============================================================================
 # Final setup instructions
 # =============================================================================
