@@ -56,7 +56,7 @@
 
 	![](./assets/create-key-pair.png)
 
-14) Download **CloudFormation** Yaml File and save it to your laptop : https://drive.google.com/file/d/1I8x85kgXhDVd8LxkbHfKVBvo8dG9qnx9/view?usp=sharing
+14) Download **CloudFormation** Yaml File and save it to your laptop : [Download](/cloudformation-ec2.yaml)
 15) On AWS Console, Search for **CloudFormation** and Press Enter
 16) Click **Create Stack** ( with new resources(standard) )
 17) From Prerequisite - Prepare template, select **Choose an existing template** and from specify template select **Upload a template file**.
