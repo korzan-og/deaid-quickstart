@@ -122,7 +122,6 @@ git clone https://github.com/korzan-og/deaid-quickstart.git
 ```bash
 cd deaid-quickstart
 chmod +x install-dependencies.sh
-./install-dependencies.sh
 ```
 Run below command to install the dependencies. The last command will install all dependencies with one script.
 **It may take couple of minutes for script to complete**
