@@ -24,8 +24,10 @@ sudo apt-get install -y \
     gnupg \
     software-properties-common \
     python3-pip \
+    python3.12-venv \
     jq \
     librdkafka-dev \
+    libssl-dev \
     unzip \
     pkg-config
 
