@@ -1,0 +1,263 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EC2 Instance for Streaming Agents Workshop - Ubuntu T3.small with required security groups'
+
+Parameters:
+  KeyPairName:
+    Type: String
+    Description: 'Name of the existing EC2 Key Pair for SSH access (must be created beforehand)'
+    ConstraintDescription: 'Key pair must exist in your AWS account'
+  
+  InstanceType:
+    Type: String
+    Default: 't3.small'
+    AllowedValues:
+      - t3.small
+      - t3.medium
+      - t3.large
+    Description: 'EC2 instance type'
+
+Resources:
+  # Security Group for SSH access
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'Security group for SSH access'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: 'SSH access from anywhere'
+      Tags:
+        - Key: Name
+          Value: 'StreamingAgents-SSH-SG'
+
+  # Security Group for Port 9000
+  Port9000SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'Security group for TCP port 9000 access'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 9000
+          ToPort: 9000
+          CidrIp: 0.0.0.0/0
+          Description: 'TCP port 9000 access from anywhere'
+      Tags:
+        - Key: Name
+          Value: 'StreamingAgents-Port9000-SG'
+
+  # Security Group for HTTP access
+  HTTPSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'Security group for HTTP access'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+          Description: 'HTTP access from anywhere'
+        - IpProtocol: tcp
+          FromPort: 8443
+          ToPort: 8443
+          CidrIp: 0.0.0.0/0
+          Description: 'HTTPS access from anywhere'
+      Tags:
+        - Key: Name
+          Value: 'StreamingAgents-HTTP-SG'
+
+  # Note: Key pair must exist before deploying this stack
+
+  # EC2 Instance
+  StreamingAgentsInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0360c520857e3138f  # Ubuntu Server 22.04 LTS (HVM), SSD Volume Type
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyPairName
+      SecurityGroupIds:
+        - !Ref SSHSecurityGroup
+        - !Ref Port9000SecurityGroup
+        - !Ref HTTPSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 20
+            VolumeType: gp3
+            Encrypted: true
+            DeleteOnTermination: true
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          
+          # Set environment variables for non-interactive installation
+          export DEBIAN_FRONTEND=noninteractive
+          export GPG_TTY=$(tty)
+          
+          echo "🚀 Starting Streaming Agents Workshop instance setup..."
+          
+          # Update system
+          apt-get update -y
+          apt-get upgrade -y
+          
+          # Install AWS CLI
+          apt-get install -y awscli
+          
+          # Install common dependencies
+          echo "🔧 Installing common dependencies..."
+          apt-get install -y \
+              curl \
+              wget \
+              gnupg \
+              software-properties-common \
+              python3-pip \
+              jq \
+              librdkafka-dev \
+              unzip \
+              pkg-config
+          
+          # =============================================================================
+          # Install UV (Python package manager)
+          # =============================================================================
+          echo "🐍 Installing UV..."
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          
+          # Create symlink for UV
+          echo "🔗 Creating UV symlink..."
+          if [ -f "$HOME/.cargo/bin/uv" ]; then
+              sudo ln -sf "$HOME/.cargo/bin/uv" /usr/local/bin/uv
+              echo "✓ UV symlink created successfully"
+          else
+              echo "⚠️  UV binary not found at expected location"
+          fi
+          
+          # Add to PATH for current session
+          export PATH="$HOME/.cargo/bin:$PATH"
+          
+          # =============================================================================
+          # Install Terraform
+          # =============================================================================
+          echo "🏗️  Installing Terraform..."
+          
+          # Add HashiCorp GPG key
+          wget -O- https://apt.releases.hashicorp.com/gpg | \
+              gpg --dearmor | \
+              sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+          
+          # Add HashiCorp repository
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | \
+              sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
+          
+          # Install Terraform
+          apt-get update -y
+          apt-get install -y terraform
+          
+          # =============================================================================
+          # Install AWS CLI v2
+          # =============================================================================
+          echo "☁️  Installing AWS CLI v2..."
+          
+          # Download and install AWS CLI v2
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip -q awscliv2.zip
+          yes | sudo ./aws/install --update --force
+          rm -rf aws awscliv2.zip
+          
+          # =============================================================================
+          # Install Confluent CLI
+          # =============================================================================
+          echo "🔄 Installing Confluent CLI..."
+          
+          # Add Confluent GPG key
+          sudo mkdir -p /etc/apt/keyrings
+          curl https://packages.confluent.io/confluent-cli/deb/archive.key | \
+              sudo gpg --batch --yes --dearmor -o /etc/apt/keyrings/confluent-cli.gpg
+          sudo chmod go+r /etc/apt/keyrings/confluent-cli.gpg
+          
+          # Add Confluent repository
+          echo "deb [signed-by=/etc/apt/keyrings/confluent-cli.gpg] https://packages.confluent.io/confluent-cli/deb stable main" | \
+              sudo tee /etc/apt/sources.list.d/confluent-cli.list > /dev/null
+          
+          # Install Confluent CLI
+          apt-get update -y
+          apt-get install -y confluent-cli
+          
+          # =============================================================================
+          # Install Docker
+          # =============================================================================
+          echo "🐳 Installing Docker..."
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
+          rm get-docker.sh
+          
+          # Add current user to docker group
+          sudo groupadd docker 2>/dev/null || true
+          sudo usermod -aG docker ubuntu
+          
+          # =============================================================================
+          # Create welcome message
+          # =============================================================================
+          cat > /etc/motd << 'EOF'
+          ===============================================
+          Streaming Agents Workshop Instance
+          ===============================================
+          This instance is ready for the workshop!
+          
+          Pre-installed tools:
+          - UV (Python package manager)
+          - Terraform
+          - AWS CLI v2
+          - Confluent CLI
+          - Docker
+          - Python3, pip, jq, librdkafka
+          
+          Authentication: SSH Key Pair
+          
+          Next steps:
+          1. Clone the workshop repository
+          2. Follow the workshop instructions
+          
+          Instance created: $(date)
+          ===============================================
+          EOF
+          
+          # Log completion
+          echo "Instance setup completed at $(date)" >> /var/log/user-data.log
+          echo "✅ All dependencies installed successfully!"
+      Tags:
+        - Key: Name
+          Value: 'StreamingAgents-Workshop-Instance'
+        - Key: Purpose
+          Value: 'Streaming Agents Workshop'
+        - Key: Environment
+          Value: 'Workshop'
+
+Outputs:
+  InstanceId:
+    Description: 'Instance ID of the created EC2 instance'
+    Value: !Ref StreamingAgentsInstance
+    Export:
+      Name: !Sub '${AWS::StackName}-InstanceId'
+
+  PublicIP:
+    Description: 'Public IP address of the created EC2 instance'
+    Value: !GetAtt StreamingAgentsInstance.PublicIp
+    Export:
+      Name: !Sub '${AWS::StackName}-PublicIP'
+
+  PublicDNS:
+    Description: 'Public DNS name of the created EC2 instance'
+    Value: !GetAtt StreamingAgentsInstance.PublicDnsName
+    Export:
+      Name: !Sub '${AWS::StackName}-PublicDNS'
+
+  KeyPairName:
+    Description: 'Name of the Key Pair used'
+    Value: !Ref KeyPairName
+    Export:
+      Name: !Sub '${AWS::StackName}-KeyPairName'
+
+  SSHCommand:
+    Description: 'SSH command to connect to the instance'
+    Value: !Sub 'ssh -i ${KeyPairName}.pem ubuntu@${StreamingAgentsInstance.PublicIp}'
