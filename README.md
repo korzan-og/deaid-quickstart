@@ -9,16 +9,20 @@
 
 
 2) Click on **Get Started**
-	![](/assets/getstarted.png)
+
+![](/assets/getstarted.png)
 
 3) Click Email one-time password (OTP)
-	![](./assets/signin.png)
+
+![](./assets/signin.png)
+
 4) Enter your email address and click **Send** passcode
 5) You will receive an email from AWS with a 9-digit OTP in it ( If you don't receive it please check your Spam/Junk Folder)
 	Paste/Enter that 9-digit OTP to the AWS Workshop Studio
 6) Enter your event access code and click **Next**.
-	**This code will be provided by the facilitators.**
-	![](./assets/event_access_code.png)
+    **This code will be provided by the facilitators.**
+    
+    ![](./assets/event_access_code.png)
 
 7) Review the "terms and conditions", click **I agree with the Terms and Conditions** and click **Join event** 
 	![](./assets/termsandconditions.png)
