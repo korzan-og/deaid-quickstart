@@ -61,14 +61,18 @@
 15) On AWS Console, Search for **CloudFormation** and select CloudFormation service.
 16) Click **Create Stack**
 17) From **Prerequisite - Prepare template** screen, 
-- [ ] Select **Choose an existing template** 
-- [ ] From **Specify Template** select **Upload a template file**.
-- [ ] Click **Choose file** and select the CloudFormation Yaml file that you downloaded in the previous steps
-- [ ] Click **Next**
+- Select **Choose an existing template** 
+- From **Specify Template** select **Upload a template file**.
+- Click **Choose file** and select the CloudFormation Yaml file that you downloaded in the previous steps
+- Click **Next**
 
 	![](./assets/create-stack.png)
 
-18) In Specify Stack details, enter a **stack name** and enter your keypair name that you created in previous steps in the **KeyPairName** field. Leave the rest default and click **Next**
+18) In **Specify Stack** details, 
+- Enter a **stack name**
+- Enter your keypair name that you created in previous steps in the **KeyPairName** field. 
+- Leave the rest default 
+- Click **Next**
 
     ![](./assets/create-stack-details.png)
 
