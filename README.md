@@ -96,101 +96,30 @@ chmod 400 <name of the pem file>.pem
 
 For Windows:
 
-	```bash
-	icacls .\<name of the pem file>.pem /inheritance:r
-	icacls .\<name of the pem file>.pem /grant:r "%username":"(R)"
-	```
+```bash
+icacls .\<name of the pem file>.pem /inheritance:r
+icacls .\<name of the pem file>.pem /grant:r "%username":"(R)"
+```
 
 **With these steps you provisioned the machine to install the necessary tools**
+
 23) Clone the repo
 
-	```bash
-	git clone https://github.com/korzan-og/deaid-quickstart.git
-	```
+```bash
+git clone https://github.com/korzan-og/deaid-quickstart.git
+```
 
 24) Change directory to the folder and run below commands. The last command will install all dependencies with one script.
 	**It may take couple of minutes for script to complete**
 
-	```bash
-	cd deaid-quickstart
-	```
-	
-	```bash
-	chmod +x install-dependencies.sh
-	```
-
-	```bash
-	./install-dependencies.sh
-	```
+```bash
+cd deaid-quickstart
+chmod +x install-dependencies.sh
+./install-dependencies.sh
+```
 
 25) Change directory to the home folder and go to first exercise!
 
-	```bash
-	cd ..
-	```
-
-## Directory Structure
-
-```
-quickstart-streaming-agents/
-├── aws|azure/               # Choose a cloud
-│   ├── core/                # Shared Terraform infrastructure
-│   ├── lab1-tool-calling/   # Lab-specific infra
-│   └── lab2-vector-search/  # Lab-specific infra
-├── deploy.py                # 🚀 Start here
-└── scripts/                 # Python utilities
-```
-
-<details>
-<summary>🔄 Alternative deployment methods</summary>
-
-**Traditional Python:**
-
 ```bash
-pip install -e . && python deploy.py
-```
-
-</details>
-
-<details>
-<summary>🔧 Manual terraform deployment</summary>
-
-### Prerequisites
-- All tools installed and authenticated
-- Confluent Cloud API keys (Cloud Resource Management keys with EnvironmentAdmin role)
-
-### Deploy
-
-```bash
-cd aws/  # or azure/
-cd core/
-terraform init && terraform apply --auto-approve
-cd ../lab1-tool-calling/  # or lab2-vector-search
-terraform init && terraform apply --auto-approve
-```
-
-### Required terraform.tfvars
-```hcl
-prefix = "streaming-agents"
-cloud_provider = "aws"  # or "azure"
-cloud_region = "your-region"  # must be a region supported by MongoDB free tier, otherwise Lab2 deployment will not succeed
-confluent_cloud_api_key = "your-key"
-confluent_cloud_api_secret = "your-secret"
-ZAPIER_SSE_ENDPOINT = "https://mcp.zapier.com/api/mcp/s/your-key/sse"  # Lab1
-MONGODB_CONNECTION_STRING = "mongodb+srv://cluster0.abc.mongodb.net"  # Lab2
-mongodb_username = "your-db-user"  # Lab2
-mongodb_password = "your-db-pass"  # Lab2
-```
-
-### Tear down
-```bash
-cd aws/lab1-tool-calling && terraform destroy --auto-approve
-cd ../core && terraform destroy --auto-approve
-```
-</details>
-
-## Cleanup
-```bash
-# Automated
-uv run destroy
+cd ..
 ```
