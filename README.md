@@ -79,7 +79,7 @@
 
 	![](./assets/stack-output.png)
 
-    
+
 
 22) Open a terminal (powershell in windows) and go to the folder where you downloaded the PEM file in step 14 and run below command. Don't forget to replace **\<name of the pem file\>** with the name of your **keypair** file name and **\<PublicDNS\>** with **PublicDNS** value from previous step
 	```bash
@@ -92,6 +92,7 @@ For MacOS:
 	```bash
 	chmod 400 <name of the pem file>.pem
 	```
+
 For Windows:
 
 	```bash
@@ -101,11 +102,14 @@ For Windows:
 
 **With these steps you provisioned the machine to install the necessary tools**
 23) Clone the repo
+
 	```bash
 	git clone https://github.com/korzan-og/deaid-quickstart.git
 	```
+
 24) Change directory to the folder and run below commands. The last command will install all dependencies with one script.
 	**It may take couple of minutes for script to complete**
+
 	```bash
 	cd deaid-quickstart
 	```
@@ -117,7 +121,9 @@ For Windows:
 	```bash
 	./install-dependencies.sh
 	```
+
 25) Change directory to the home folder and go to first exercise!
+
 	```bash
 	cd ..
 	```
@@ -138,6 +144,7 @@ quickstart-streaming-agents/
 <summary>🔄 Alternative deployment methods</summary>
 
 **Traditional Python:**
+
 ```bash
 pip install -e . && python deploy.py
 ```
@@ -152,6 +159,7 @@ pip install -e . && python deploy.py
 - Confluent Cloud API keys (Cloud Resource Management keys with EnvironmentAdmin role)
 
 ### Deploy
+
 ```bash
 cd aws/  # or azure/
 cd core/
