@@ -9,7 +9,7 @@
 
 
 2) Click on **Get Started**
-	![./assets/getstarted.png]
+	![/assets/getstarted.png]
 
 3) Click Email one-time password (OTP)
 	![[./assets/signin.png]]
