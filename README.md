@@ -89,9 +89,10 @@
 **Note:**  If you receive an error saying "Unprotected Private Key File" run below commands and rerun the above command. 
 
 For MacOS:
-	```bash
-	chmod 400 <name of the pem file>.pem
-	```
+
+```bash
+chmod 400 <name of the pem file>.pem
+```
 
 For Windows:
 
