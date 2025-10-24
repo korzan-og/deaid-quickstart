@@ -12,7 +12,7 @@
 	![/assets/getstarted.png]
 
 3) Click Email one-time password (OTP)
-	![[./assets/signin.png]]
+	![./assets/signin.png]
 4) Enter your email address and click **Send** passcode
 5) You will receive an email from AWS with a 9-digit OTP in it ( If you don't receive it please check your Spam/Junk Folder)
 	Paste/Enter that 9-digit OTP to the AWS Workshop Studio
