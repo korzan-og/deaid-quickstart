@@ -9,7 +9,7 @@
 
 
 2) Click on **Get Started**
-	![/assets/getstarted.png]
+	![](/assets/getstarted.png)
 
 3) Click Email one-time password (OTP)
 	![](./assets/signin.png)
@@ -18,19 +18,19 @@
 	Paste/Enter that 9-digit OTP to the AWS Workshop Studio
 6) Enter your event access code and click **Next**.
 	**This code will be provided by the facilitators.**
-	![[./assets/event_access_code.png]]
+	![](./assets/event_access_code.png)
 
 7) Review the "terms and conditions", click **I agree with the Terms and Conditions** and click **Join event** 
-	![[./assets/termsandconditions.png]]
+	![](./assets/termsandconditions.png)
 8) Ciick **Get AWS CLI Credentials** button.
-	![[./assets/aws-credentials.png]]
+	![](./assets/aws-credentials.png)
 9) Copy and paste the export information to a notepad/notebook.
 	**This information will be needed during the provisioning of the machines**
-	![[./assets/aws-account-access.png]]
+	![](./assets/aws-account-access.png)
 10) Close **AWS account access** popup and click** **Open AWS Console (us-east-1) ** on the left menu.
 11) On AWS Console, Search for **EC2** and Press Enter
 12) In **EC2** menu, under **Network & Security**, click **Key Pairs**
-	![[./assets/keypair.png]]
+	![](./assets/keypair.png)
 13) Click **Create key Pair** in the upper right corner. In the Create key pair screen, enter a name for the key pair.
     
 	 **Note:  This key pair name is important for future steps.** 
@@ -40,22 +40,22 @@
     **When this step successfully completes, it will download a pem file to your machine. ** 
     **This PEM file will be used to login to the EC2 instance for the workshops so make sure where you download it.**
 
-	![[./assets/create-key-pair.png]]
+	![](./assets/create-key-pair.png)
 14) Download **CloudFormation** Yaml File and save it to your laptop : https://drive.google.com/file/d/1I8x85kgXhDVd8LxkbHfKVBvo8dG9qnx9/view?usp=sharing
 15) On AWS Console, Search for **CloudFormation** and Press Enter
 16) Click **Create Stack** ( with new resources(standard) )
 17) From Prerequisite - Prepare template, select **Choose an existing template** and from specify template select **Upload a template file**.
 	Click **Choose file** and select the CloudFormation Yaml file that you downloaded in the previous steps. Click **Next**
-	![[./assets/create-stack.png]]
+	![](./assets/create-stack.png)
 18) In Specify Stack details, enter a **stack name** and enter your keypair name that you created in previous steps in the **KeyPairName** field. Leave the rest default and click **Next**
-    ![[./assets/create-stack-details.png]]
+    ![](./assets/create-stack-details.png)
 
 19) Leave the rest of the options as default click Next and then click Submit the template to start CloudFormation.
 20) CloudFormation script may take couple of minutes to complete. You can click the Refresh: Events button to check the status. When the stack is complete, the stacks status on the left side will be show the message of **CREATE_COMPLETE**
-	![[./assets/stack-create-complete.png]]
+	![](./assets/stack-create-complete.png)
 21) When stack is complete, click **Outputs** and note down **PublicDNS** value. 
 	This is the hostname of the machine you will use to run the commands
-	![[./assets/stack-output.png]]
+	![](./assets/stack-output.png)
 
 22) Open a terminal (powershell in windows) and go to the folder where you downloaded the PEM file in step 14 and run below command. Don't forget to replace **\<name of the pem file\>** with the name of your **keypair** file name and **\<PublicDNS\>** with **PublicDNS** value from previous step
 	```bash
