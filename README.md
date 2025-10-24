@@ -3,9 +3,9 @@
 ## 🚀 Quick Start
 # Provisioning of the AWS Machine
 
-1) Log in to AWS Workshop Studio
+1) Click Below link to go to AWS Workshop Studio
 
-	https://catalog.us-east-1.prod.workshops.aws/
+ [AWS Workshop Studio](https://catalog.us-east-1.prod.workshops.aws/)
 
 
 2) Click on **Get Started**
