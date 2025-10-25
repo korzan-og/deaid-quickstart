@@ -5,7 +5,7 @@
 
 1) Click Below link to go to AWS Workshop Studio
 
- [AWS Workshop Studio](https://catalog.us-east-1.prod.workshops.aws/)
+ [AWS Workshop Studio](https://catalog.us-east-1.prod.workshops.aws/join)
 
 
 2) Click on **Get Started**
