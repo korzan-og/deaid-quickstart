@@ -87,7 +87,7 @@
 
 	![](./assets/stack-output.png)
 
-
+**With these steps you provisioned the machine to install the necessary tools**
 
 22) Open a terminal (powershell in windows) and go to the folder where you downloaded the PEM file in step 14 and run below command. Don't forget to replace **\<name of the pem file\>** with the name of your **keypair** file name and **\<PublicDNS\>** with **PublicDNS** value from previous step
 	```bash
@@ -108,8 +108,6 @@ For Windows:
 icacls .\<name of the pem file>.pem /inheritance:r
 icacls .\<name of the pem file>.pem /grant:r "%username":"(R)"
 ```
-
-**With these steps you provisioned the machine to install the necessary tools**
 
 23) Clone the repo
 
