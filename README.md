@@ -138,4 +138,4 @@ exit
 ssh -i ./<name of the pem file>.pem ubuntu@<PublicDNS>
 ```
 
-26) Proceed to the first exercise! **Good luck**
+26) Proceed to the next Lab! **Good luck**
